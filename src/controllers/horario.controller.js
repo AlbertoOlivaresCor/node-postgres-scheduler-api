@@ -1,6 +1,12 @@
+import { generarHorario } from '../services/generadorHorario.service.js'
 import { db } from '../db.js'
 
-export const getHorario = async () => {
+export const generar = async (req, res) => {
+  const resultado = await generarHorario()
+  res.json(resultado)
+}
+
+export const getHorario = async (req, res) => {
   const result = await db.query(`
     SELECT h.*, c.nombre AS curso, p.nombre AS profesor, s.nombre AS sala
     FROM horario h
@@ -9,5 +15,6 @@ export const getHorario = async () => {
     JOIN salas s ON h.sala_id = s.id
     ORDER BY dia_semana, hora_inicio
   `)
-  return result.rows
+  res.json(result.rows)
 }
+
